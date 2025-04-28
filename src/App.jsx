@@ -25,18 +25,22 @@ function App() {
     setTasks(tasks => tasks.filter(task =>  task.id !== id))
   }
 
-  function completeTask (id) {
-    setTasks(tasks.map(task => task.id === id && {...task, completed: true}))
+  function completeTask(id) {
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: true } : task)));
   }
 
   function sortTasks (tasks) {
     return tasks.slice().sort( (a , b) => {
+
+      // console.log(tasks);
+      
       if (sortType === 'priority') {
         const priorityOrder = {High: 1, Medium: 2, Low: 3}
-
+        console.log(tasks);
+        
         return sortOrder == 'asc' ? priorityOrder[a.priority] - priorityOrder[b.priority] : priorityOrder[b.priority] - priorityOrder[a.priority] ;
       } else {
-        return sortOrder === 'asc' ? new Date(a.deadline) - new Date (b.deadline) :  new Date(b.deadline) - new Date (a.deadline)
+        return sortOrder === 'asc' ? new Date(a.deadline) - new Date(b.deadline) :  new Date(b.deadline) - new Date(a.deadline)
       }
     })
   }
@@ -174,9 +178,9 @@ function TaskItem({task, deleteTask, completeTask}) {
         <div className="task-deadline">Due: {new Date(deadline).toLocaleString()}</div>
       </div>
       <div className="task-buttons">
-        {!completed && <button type="button" className="complete-button" onClick={() => completeTask(id)}>
+        {!completed && (<button type="button" className="complete-button" onClick={() => completeTask(id)}>
           Complete
-        </button>}
+        </button>)}
         <button type="button" className="delete-button" onClick={() => deleteTask(id)}>
           Delete
         </button>
